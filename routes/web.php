@@ -285,6 +285,13 @@ Route::middleware('auth', 'valid.user')->group(function () {
 
 	Route::prefix('sadmin')->middleware('role:super_admin')->group(function () {
 
+		//dashboard
+		Route::get('/dashboard', [DashboardController::class, 'index'])->name('sadmin.dashboard');
+		//admin
+		Route::resource('/admins', AdminUserController::class);
+		//user
+		Route::resource('/users', UserController::class);
+		
 		//dashboard chart
 		Route::post('/dashboard-plan-chart', [DashboardController::class, 'planChartData'])->name('dashboard.plan-chart');
 		Route::post('/dashboard-income-chart', [DashboardController::class, 'incomeChartData'])->name('dashboard.income-chart');
@@ -296,11 +303,6 @@ Route::middleware('auth', 'valid.user')->group(function () {
 		Route::get('/subscribedPlan/{id}/edit', [SubscriptionController::class, 'userSubscribedPlanEdit'])->name('subscription.user.plan.edit');
 		Route::get('/subscribedPlan/{id}/update', [SubscriptionController::class, 'userSubscribedPlanUpdate'])->name('subscription.user.plan.update');
 		//        Route::get('logs', [LogViewerController::class, 'index']);
-		//dashboard
-		Route::get('/dashboard', [DashboardController::class, 'index'])->name('sadmin.dashboard');
-		//user
-		Route::resource('/users', UserController::class);
-		Route::resource('/admins', AdminUserController::class);
 		//testimonials
 		Route::resource('/frontTestimonials', FrontTestimonialController::class);
 

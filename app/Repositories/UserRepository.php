@@ -82,15 +82,17 @@ class UserRepository extends BaseRepository
             if (isset($input['profile']) && ! empty($input['profile'])) {
                 $user->addMedia($input['profile'])->toMediaCollection(User::PROFILE, config('app.media_disc'));
             }
-            
-            if (isset($input['is_admin']) == 'false') {
+
+            if (empty($input['is_admin'])) {
                 $user->sendEmailVerificationNotification();
             }
+
             if (isset($input['plan_id'])) {
                 $plan = Plan::whereId($input['plan_id'])->first();
             } else {
                 $plan = Plan::whereIsDefault(true)->first();
             }
+
             $subscription = new Subscription();
             $subscription->plan_id = $plan->id;
             $subscription->starts_at = Carbon::now();
